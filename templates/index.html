@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+            crossorigin="anonymous"></script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&display=swap" rel="stylesheet">
+
+    <title></title>
+
+
+    <script>
+        function signup() {
+            //store inputs in dictionary format and assign to a variable data
+            let data = {
+                email: $('#email').val(),
+                password: $('#password').val()
+            }
+            $.ajax({
+                type: 'POST',
+                url: '/signup',
+                data: JSON.stringify(data),
+                contentType: "application/json; charset=utf-8",
+                success: function (response) {
+                    alert(response['msg'])
+                    window.location.href = "/main";
+                },
+                fail: function(response) {
+                    console.log("fail")
+                }
+            });
+        }
+
+        function signin() {
+            let data = {
+                email: $('#email').val(),
+                password: $('#password').val()
+            }
+            $.ajax({
+                type: 'POST',
+                url: '/signin',
+                data: JSON.stringify(data),
+                contentType: "application/json; charset=utf-8",
+                success: function (response) {
+                    if (response['result'] =='success'){
+                        alert(response['msg'])
+                        $.cookie('mytoken', response['token'], {path: '/'})
+                        window.location.href = "/index";
+                    }
+
+                },
+                fail: function(response) {
+                    console.log("fail")
+                }
+            });
+        }
+
+    </script>
+</head>
+<body>
+
+
+<div class="container" style="width: 500px; margin-top: 70px; border: solid 1px">
+    <div class="box" style="margin-top: 10px">
+        <div class="input-group mb-3">
+            <span class="input-group-text">name</span>
+            <input id="name" type="text" class="form-control" placeholder="name">
+        </div>
+        <div class="input-group mb-3">
+            <span class="input-group-text">comment</span>
+            <input id="comment" type="text" class="form-control" placeholder="comment">
+        </div>
+        <button onclick="signup()" type="button" class="btn btn-warning mybtn">post comment</button><br><br>
+
+    </div>
+    <table class="table" style="border: solid 1px; margin-top: 10px">
+        <thead>
+        <tr>
+            <th scope="col">name</th>
+            <th scope="col">comment</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>홍길동</td>
+            <td>hello world!</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>
